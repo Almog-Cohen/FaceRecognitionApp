@@ -1,0 +1,25 @@
+services:
+
+  # Back End
+  facerecognition-api:
+    container_name: backend
+    build: ./
+    command: npm start
+    working_dir: /usr/src/facerecognition-api
+    environment:
+      POSTGRES_URI: postgres://admin:password@postgres:5432/frdb 
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/usr/src/facerecognition-api
+
+  # PostgreSQL
+  postgres:
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: frdb
+      POSTGRES_HOST: postgres
+    build: ./postgres
+    ports:
+      - "5432:5432"
