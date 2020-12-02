@@ -4,7 +4,9 @@ id serial PRIMARY KEY,
 name VARCHAR(70),
 email text UNIQUE NOT NULL,
 entries BIGINT DEFAULT 0,
-joined TIMESTAMP NOT NULL
+joined TIMESTAMP NOT NULL,
+phone VARCHAR(15),
+age BIGINT DEFAULT 18
 );
 
 COMMIT;

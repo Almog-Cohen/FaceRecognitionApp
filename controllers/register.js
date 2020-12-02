@@ -1,5 +1,10 @@
-const handleRegister = (req, res, db, bcrypt) => {
+const jwt = require("jsonwebtoken");
+const { token } = require("morgan");
+const redis = require("redis");
 
+const redisClient = redis.createClient(process.env.REDIS_URI);
+
+const handleRegister = (db, bcrypt) => (req, res) => {
 
     //validtion
     const { email, name, password } = req.body;
@@ -25,14 +30,34 @@ const handleRegister = (req, res, db, bcrypt) => {
                         joined: new Date()
                     })
                     .then(user => {
-                        res.json(user[0])
-                    })
+                        if(user[0].email){
+                        return createSession(user[0])
+                        }
+                        // res.json(user[0])
+                    }).then( (session) => res.json(session))
             })
             .then(trx.commit)
             .catch(trx.rollback)
     })
-        .catch(err => res.status(400).json('Unable to connect'))
+        .catch(err => res.status(400).json('Unable to connecting'))
 }
+
+const createSession = (data) => {
+    const { email , id} = data;
+    const token = signToken(email);
+    return setToken(token, id)
+    .then(() =>{
+        return { success: "true", userId: id, token}
+    }).catch((err) => res.status(400).json(err));
+}
+
+const signToken = (email) => {
+    const jwtPayload = {email};
+    return jwt.sign(jwtPayload, "JWT_SECRET", {expiresIn: "1 day"})
+}
+
+const setToken = (key, value) => Promise.resolve(redisClient.set(key, value));
+
 
 module.exports = {
     handleRegister: handleRegister
