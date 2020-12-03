@@ -13,6 +13,8 @@ const image = require('./controllers/image');
 const auth = require('./controllers/authorization');
 const signout = require('./controllers/signout');
 const removeUser = require('./controllers/removeUser');
+const ranklist = require('./controllers/ranklist');
+
 
 
 
@@ -38,6 +40,7 @@ app.get('/profile/:id', auth.requireAuth, (req, res) => { profile.handleProfileG
 app.post('/profile/:id', auth.requireAuth, (req, res) => { profile.handleProfileUpdate(req, res, db) })
 app.put('/image', auth.requireAuth, (req, res) => { image.handleImage(req, res, db) })
 app.post('/imageurl', auth.requireAuth,(req, res) => { image.handleApiCall(req, res) })
+app.get('/rank-list', auth.requireAuth,(req, res) => { ranklist.handleRankList(req, res, db) })
 app.delete('/signout', auth.requireAuth, (req,res) => { signout.removeToken(req, res) })
 app.delete('/removeUser/:id', auth.requireAuth, (req,res) => { removeUser.removeUserData(req, res, db) })
 
