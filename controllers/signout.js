@@ -1,7 +1,7 @@
 const redis = require("redis");
 
 //setup reddis
-const redisClient = redis.createClient(process.env.REDIS_URI);
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 
 // Remove user token when he signout

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { token } = require("morgan");
 const redis = require("redis");
 
-const redisClient = redis.createClient(process.env.REDIS_URI);
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 const handleRegister = (db, bcrypt) => (req, res) => {
 

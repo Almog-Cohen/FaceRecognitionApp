@@ -3,7 +3,7 @@ const { token } = require("morgan");
 const redis = require("redis");
 
 //setup reddis
-const redisClient = redis.createClient(process.env.REDIS_URI);
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 const handleSignin = (db, bcrypt, req) => {
   const { email, password } = req.body;

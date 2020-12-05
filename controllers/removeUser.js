@@ -2,7 +2,7 @@ const { response } = require("express");
 const redis = require("redis");
 
 //setup reddis
-const redisClient = redis.createClient(process.env.REDIS_URI);
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 
 // Delete user from data base and user token from redis
