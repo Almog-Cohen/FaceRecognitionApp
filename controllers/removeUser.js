@@ -4,6 +4,8 @@ const redis = require("redis");
 //setup reddis
 const redisClient = redis.createClient(process.env.REDIS_URI);
 
+
+// Delete user from data base and user token from redis
 const removeUserData = (req, res, db) => {
   const { authorization } = req.headers;
   const { id } = req.params;
@@ -15,7 +17,6 @@ const removeUserData = (req, res, db) => {
     return replay;
   });
 
-  console.log("RIGHTTTTTTT PLACE");
   db("users")
     .where("id", id)
     .del()

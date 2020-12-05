@@ -21,20 +21,22 @@ const ranklist = require('./controllers/ranklist');
 
 const db = knex({
     client: 'pg',
-    connection : process.env.POSTGRES_URI
+    connection : {
+       host : process.env.DATABASE_URL,
+       ssl: true,
+    }
 });
 
 
 app.use(express.json());
 
-// Acess from any domain
+// Access from any domain
 app.use(cors());
 app.use(morgan('combined'))
 
 
 app.get('/', (req, res) => res.send("Website working"))
 app.post('/signin', signin.signInAuthentication(db, bcrypt))
-// app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.post('/register', register.handleRegister(db, bcrypt))
 app.get('/profile/:id', auth.requireAuth, (req, res) => { profile.handleProfileGet(req, res, db) })
 app.post('/profile/:id', auth.requireAuth, (req, res) => { profile.handleProfileUpdate(req, res, db) })
@@ -46,7 +48,7 @@ app.delete('/removeUser/:id', auth.requireAuth, (req,res) => { removeUser.remove
 
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log('app is runing');
+    console.log(`app is runing on port ${process.env.PORT}`);
 })
 
 

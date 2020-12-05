@@ -27,7 +27,7 @@ const handleSignin = (db, bcrypt, req) => {
           .then((user) => {
             return user[0];
           })
-          .catch((err) => Promise.reject("Unable geet the user"));
+          .catch((err) => Promise.reject("Unable geet the user"));  
       } else {
         Promise.reject("Worng credentias");
       }
@@ -35,24 +35,28 @@ const handleSignin = (db, bcrypt, req) => {
     .catch((err) => Promise.reject("Worng credentias"));
 };
 
+// Check if user has existing token
 const getAuthTokenId = (req, res) => {
   const { authorization } = req.headers;
   return redisClient.get(authorization, (err, replay) => {
     if (err || !replay) {
       return res.status(400).json("Unautthorized");
     }
-    console.log("Value is :  " +replay + "SIGN IN IN REDIS");
     return res.json({ id: replay });
   });
 };
 
+// Generate new token
 const signToken = (email) => {
   const jwtPayload = { email };
   return jwt.sign(jwtPayload, "JWT_SECRET", { expiresIn: "1 day" });
 };
 
+// Set token in redis
 const setToken = (key, value) => Promise.resolve(redisClient.set(key, value));
 
+
+// Create new session token with email and id of the user
 const createSessions = (data) => {
   console.log(data);
   const { email, id } = data;
@@ -63,6 +67,7 @@ const createSessions = (data) => {
     })
     .catch(console.log);
 };
+
 
 const signInAuthentication = (db, bcrypt) => (req, res) => {
   const { authorization } = req.headers;

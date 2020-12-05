@@ -33,7 +33,6 @@ const handleRegister = (db, bcrypt) => (req, res) => {
                         if(user[0].email){
                         return createSession(user[0])
                         }
-                        // res.json(user[0])
                     }).then( (session) => res.json(session))
             })
             .then(trx.commit)
@@ -42,6 +41,8 @@ const handleRegister = (db, bcrypt) => (req, res) => {
         .catch(err => res.status(400).json('Unable to connecting'))
 }
 
+
+// Create new session token with email and id of the user
 const createSession = (data) => {
     const { email , id} = data;
     const token = signToken(email);
@@ -51,11 +52,13 @@ const createSession = (data) => {
     }).catch((err) => res.status(400).json(err));
 }
 
+// Generate new token
 const signToken = (email) => {
     const jwtPayload = {email};
     return jwt.sign(jwtPayload, "JWT_SECRET", {expiresIn: "1 day"})
 }
 
+// Set token in redis
 const setToken = (key, value) => Promise.resolve(redisClient.set(key, value));
 
 

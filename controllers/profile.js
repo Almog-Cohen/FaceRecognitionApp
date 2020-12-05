@@ -8,7 +8,6 @@ const handleProfileGet = (req, res, db) => {
     })
     .then((user) => {
       if (user.length) {
-        console.log(user[0]);
         res.json(user[0]);
       } else {
         res.status(400).json("User not found");

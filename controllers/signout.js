@@ -3,8 +3,9 @@ const redis = require("redis");
 //setup reddis
 const redisClient = redis.createClient(process.env.REDIS_URI);
 
+
+// Remove user token when he signout
 const removeToken = (req, res) => {
-  console.log("INSIDE RENMOVE TOKENN");
   const { authorization } = req.headers;
 
   return redisClient.del(authorization, (err, replay) => {
