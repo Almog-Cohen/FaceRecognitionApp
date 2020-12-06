@@ -1,6 +1,6 @@
 # FaceRecognitionApp
 
-# Facial Recognition Web Application
+## Facial Recognition Web Application
 
 •	Frontend – ReactJS.
 •	Server Side – NodeJS, ExpressJS, AWS Lambda.
