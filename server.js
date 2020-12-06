@@ -4,6 +4,7 @@ const cors = require('cors');
 const knex = require('knex');
 const { response } = require('express');
 const morgan = require('morgan');
+const helmet = require("helmet");
 const app = express();
 
 const register = require('./controllers/register');
@@ -34,6 +35,7 @@ app.use(express.json());
 
 // Access from any domain
 app.use(cors());
+app.use(helmet())
 app.use(morgan('combined'))
 
 
